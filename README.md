@@ -50,20 +50,11 @@ QQ 的 Java 类、native 签名和内部消息接口均严格适配 9.2.60。其
 python .\tools\test-push-cache-policy.py
 ```
 
-维护者本地的正式构建使用本项目专属发布密钥：
-
-- 密钥：`signing-private/release.p12`
-- 凭据：`signing-private/signing.properties`
-
-这两个文件均已被 `.gitignore` 排除，不会提交到 GitHub。存在本地签名配置时，执行：
-
 ```powershell
-.\gradlew.bat :app:assembleRelease
+.\gradlew.bat :app:assembleDebug
 ```
 
-即可生成正式签名 APK；`tools/build-local-release.ps1` 会进一步复制并验证本地发布产物。没有私钥的仓库克隆仍可使用 `assembleDebug` 生成测试包。
-
-发布密钥决定 Android 能否覆盖升级。请加密备份整个 `signing-private/` 目录，切勿删除、重新生成或提交其中内容。由于本项目此前的 APK 使用测试签名，首次切换到该发布密钥时需要先卸载旧版；此后的正式版本可以直接覆盖升级。
+测试 APK 输出到 `app/build/outputs/apk/debug/`。面向普通用户的已签名版本请从 GitHub Releases 下载。
 
 ## 许可证
 
