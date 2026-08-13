@@ -1,5 +1,13 @@
+import java.util.Properties
+
 plugins {
     id 'com.android.application'
+}
+
+def signingPropertiesFile = rootProject.file('signing-private/signing.properties')
+def signingProperties = new Properties()
+if (signingPropertiesFile.isFile()) {
+    signingPropertiesFile.withInputStream { signingProperties.load(it) }
 }
 
 android {
@@ -30,10 +38,23 @@ android {
         }
     }
 
+    signingConfigs {
+        release {
+            if (signingPropertiesFile.isFile()) {
+                storeFile rootProject.file(signingProperties.getProperty('storeFile'))
+                storePassword signingProperties.getProperty('storePassword')
+                keyAlias signingProperties.getProperty('keyAlias')
+                keyPassword signingProperties.getProperty('keyPassword')
+                storeType 'PKCS12'
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources false
+            signingConfig signingPropertiesFile.isFile() ? signingConfigs.getByName('release') : null
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {

@@ -50,26 +50,20 @@ QQ 的 Java 类、native 签名和内部消息接口均严格适配 9.2.60。其
 python .\tools\test-push-cache-policy.py
 ```
 
-生成未签名 release APK：
+维护者本地的正式构建使用本项目专属发布密钥：
+
+- 密钥：`signing-private/release.p12`
+- 凭据：`signing-private/signing.properties`
+
+这两个文件均已被 `.gitignore` 排除，不会提交到 GitHub。存在本地签名配置时，执行：
 
 ```powershell
 .\gradlew.bat :app:assembleRelease
 ```
 
-生成本地签名的测试 APK 时，先通过环境变量提供本地 keystore 密码：
+即可生成正式签名 APK；`tools/build-local-release.ps1` 会进一步复制并验证本地发布产物。没有私钥的仓库克隆仍可使用 `assembleDebug` 生成测试包。
 
-```powershell
-Set-Item Env:QQ_RECALL_GUARD_KEYSTORE_PASSWORD (Read-Host "Keystore password")
-.\tools\build-local-release.ps1
-```
-
-脚本会在已忽略的 `signing-private/` 目录中创建或复用本地 keystore，并把产物写入已忽略的 `dist/`。不要提交密码、keystore 或签名后的本地产物。
-
-## 相关项目
-
-- [WeChat Anti-Recall](https://github.com/yylsping/wechat-anti-recall)：面向微信 8.0.69 的独立防撤回模块，保留他人撤回的原消息并提供原生定位入口。
-
-两个项目分别适配 QQ 与微信，没有运行时或构建依赖。
+发布密钥决定 Android 能否覆盖升级。请加密备份整个 `signing-private/` 目录，切勿删除、重新生成或提交其中内容。由于本项目此前的 APK 使用测试签名，首次切换到该发布密钥时需要先卸载旧版；此后的正式版本可以直接覆盖升级。
 
 ## 许可证
 
