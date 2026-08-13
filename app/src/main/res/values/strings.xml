@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">QQ Recall Guard</string>
+    <string name="module_description">QQ 9.2.60 anti-recall with private ColorOS killed-process recovery</string>
+</resources>
