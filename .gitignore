@@ -32,6 +32,7 @@ audit-*/
 /ANALYSIS.md
 /HANDOFF.md
 /TEST*_VALIDATION.md
+/XPOSED_UPDATE.md
 
 # OS files
 .DS_Store
